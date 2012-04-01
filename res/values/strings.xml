@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, ReminderActivity!</string>
+    <string name="app_name">Reminder</string>
+    <string name="new_button">New</string>
+    <string name="delete">Delete</string>
+    <string name="honk">Honk!</string>
+    <string name="menu_insert">New</string>
+    <string name="meow">Meow!</string>
+    <string name="save_reminders">Save Reminders</string>
+
+</resources>
