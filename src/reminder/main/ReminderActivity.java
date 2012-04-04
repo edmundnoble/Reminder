@@ -10,7 +10,6 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.app.AlarmManager;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -260,11 +259,30 @@ public class ReminderActivity extends Activity implements
 	}
 
 	public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
-		// TODO Auto-generated method stub
 		mConnection.updateMessage(((EditText) arg0).getText().toString(),
 				instances);
-		entries.keys();
-		return false;
+		String str = ((EditText) arg0).getText().toString();
+		for (int i = 0; i < str.length() + 1; i++) {
+			for (int j = 0; j > i; j++) {
+
+			}
+		}
+		while (true) {
+
+			break;
+		}
+		String lastStr = str.substring(0, str.length() - 1);
+		Long longVal = entries.get(lastStr);
+		entries.remove(lastStr);
+		entries.put(str, longVal);
+		ArrayList<String> adapterList = new ArrayList<String>();
+		for (String element : entries.keySet()) {
+			adapterList.add(element);
+		}
+		reminderListView.setAdapter(new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, android.R.id.text1,
+				adapterList));
+		return true;
 	}
 
 	public void saveAlarms(View v) {
@@ -275,9 +293,10 @@ public class ReminderActivity extends Activity implements
 	}
 
 	public void onTimeChanged(TimePicker arg0, int arg1, int arg2) {
-		// TODO Auto-generated method stub
-		mConnection.updateTime(new Date(0, 0, 0, arg1, arg2, 0).getTime(),
-				instances);
+		if (selectedItem == null) {
+			return;
+		}
+		entries.put(selectedItem.getText(), arg0.get);
 	}
 
 	private void stop() {
@@ -290,11 +309,14 @@ public class ReminderActivity extends Activity implements
 		});
 	}
 
+	TextView selectedItem;
+
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 			long arg3) {
+		selectedItem = (TextView) arg1;
 		Date date = new Date(entries.get(((TextView) arg1).getText()));
 		timePicker.setCurrentHour(date.getHours());
-
+		timePicker.setCurrentMinute(date.getMinutes());
 	}
 
 	public boolean onMenuItemClick(MenuItem arg0) {
@@ -347,14 +369,11 @@ public class ReminderActivity extends Activity implements
 		listView.setAdapter(adapter);
 	}
 }
-
-class StartReceiver extends BroadcastReceiver {
-
-	@Override
-	public void onReceive(Context context, Intent arg1) {
-		Intent startServiceIntent =
-				new Intent(context,
-						reminder.main.service.ReminderService.class);
-		context.startService(startServiceIntent);
-	}
-}
+/**
+ * class StartReceiver extends BroadcastReceiver {
+ * 
+ * @Override public void onReceive(Context context, Intent arg1) { Intent
+ *           startServiceIntent = new Intent(context,
+ *           reminder.main.service.ReminderService.class);
+ *           context.startService(startServiceIntent); } }
+ */
